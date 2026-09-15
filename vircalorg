@@ -1,0 +1,200 @@
+import cv2 as cv
+import mediapipe as mp
+cap = cv.VideoCapture(0)
+mphands = mp.solutions.hands
+hands = mphands.Hands(max_num_hands = 1)
+mpdraw = mp.solutions.drawing_utils
+equation = " "
+clicked = False
+
+while True:
+    ret,frame = cap.read()
+    frame = cv.flip(frame,1)
+    frame = cv.resize(frame, (1000, 900))
+    rgb = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+    result = hands.process(rgb)
+
+    cv.rectangle(frame,(100,20),(750,700),(0,0,0),cv.FILLED)
+    cv.rectangle(frame,(100,20),(750,700),(0,0,200),5)
+    cv.putText(frame,"CASIO",(150,70),cv.FONT_HERSHEY_PLAIN,3,(169,169,169),3)
+
+
+    cv.rectangle(frame,(150,90),(700,150),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(150,90),(700,150),(0,0,200),3)
+    cv.putText(frame,equation,(155,130),cv.FONT_HERSHEY_PLAIN,3,(100,0,0),3)
+
+
+    cv.rectangle(frame,(220,220),(300,300),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(220,220),(300,300),(0,0,200),3)
+    cv.putText(frame,"1",(245,275),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(330,220),(410,300),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(330,220),(410,300),(0,0,200),3)
+    cv.putText(frame,"2",(355,275),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(440,220),(520,300),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(440,220),(520,300),(0,0,200),3)
+    cv.putText(frame,"3",(465,275),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(550,220),(630,300),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(550,220),(630,300),(0,0,200),3)
+    cv.putText(frame,"+",(575,275),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(220,340),(300,420),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(220,340),(300,420),(0,0,200),3)
+    cv.putText(frame,"4",(245,395),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(330,340),(410,420),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(330,340),(410,420),(0,0,200),3)
+    cv.putText(frame,"5",(355,395),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(440,340),(520,420),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(440,340),(520,420),(0,0,200),3)
+    cv.putText(frame,"6",(465,395),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(550,340),(630,420),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(550,340),(630,420),(0,0,200),3)
+    cv.putText(frame,"-",(575,395),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(220,460),(300,540),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(220,460),(300,540),(0,0,200),3)
+    cv.putText(frame,"7",(245,515),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(330,460),(410,540),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(330,460),(410,540),(0,0,200),3)
+    cv.putText(frame,"8",(355,515),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(440,460),(520,540),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(440,460),(520,540),(0,0,200),3)
+    cv.putText(frame,"9",(465,515),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(550,460),(630,540),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(550,460),(630,540),(0,0,200),3)
+    cv.putText(frame,"*",(575,515),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(220,580),(300,660),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(220,580),(300,660),(0,0,200),3)
+    cv.putText(frame,"0",(245,635),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(330,580),(410,660),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(330,580),(410,660),(0,0,200),3)
+    cv.putText(frame,"c",(355,635),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(440,580),(520,660),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(440,580),(520,660),(0,0,200),3)
+    cv.putText(frame,"=",(465,635),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+    cv.rectangle(frame,(550,580),(630,660),(200,200,200),cv.FILLED)
+    cv.rectangle(frame,(550,580),(630,660),(0,0,200),3)
+    cv.putText(frame,"/",(575,635),cv.FONT_HERSHEY_PLAIN,3,(0,0,100),3)
+
+
+
+    if result.multi_hand_landmarks:
+        for handLms in result.multi_hand_landmarks:
+            mpdraw.draw_landmarks(frame,handLms,mp.solutions.hands.HAND_CONNECTIONS)
+
+            h, w, c = frame.shape
+
+             # Index finger tip
+            x = int(handLms.landmark[8].x * w)
+            y = int(handLms.landmark[8].y * h)
+
+            tx = int(handLms.landmark[4].x * w)
+            ty = int(handLms.landmark[4].y * h)
+
+            # Draw the fingers (optional)
+            cv.circle(frame, (x, y), 10, (255, 0, 255), cv.FILLED)
+            cv.circle(frame, (tx, ty), 10, (255, 0, 255), cv.FILLED)
+
+            # Distance between thumb and index finger
+            distance = ((x - tx)**2 + (y - ty)**2) ** 0.5
+
+            # Button 1 (220,220) to (300,300)
+            if 220 < x < 300 and 220 < y < 300:
+                    if distance < 40:
+                        equation += "1"
+                        cv.waitKey(300)
+            
+            if 330 < x < 410 and 220 < y < 300:
+                    if distance < 40:
+                        equation += "2"
+                        cv.waitKey(300)
+
+            if 440 < x < 520 and 220 < y < 300:
+                    if distance < 40:
+                        equation += "3"
+                        cv.waitKey(300)
+
+            if 550 < x < 630 and 220 < y < 300:
+                    if distance < 40:
+                        equation += "+"
+                        cv.waitKey(300)
+
+            if 220 < x < 300 and 340 < y < 420:
+                    if distance < 40:
+                        equation += "4"
+                        cv.waitKey(300)
+
+            if 330 < x < 410 and 340 < y < 420:
+                    if distance < 40:
+                        equation += "5"
+                        cv.waitKey(300)
+
+            if 440 < x < 520 and  340< y < 420:
+                    if distance < 40:
+                        equation += "6"
+                        cv.waitKey(300)
+
+            if 550 < x < 630 and 340 < y < 420:
+                    if distance < 40:
+                        equation += "-"
+                        cv.waitKey(300)
+
+            if 220 < x < 300 and 460 < y < 540:
+                    if distance < 40:
+                        equation += "7"
+                        cv.waitKey(300)
+
+            if 330 < x < 410 and 460 < y < 540:
+                    if distance < 40:
+                        equation += "8"
+                        cv.waitKey(300)
+
+            if 440 < x < 520 and 460 < y < 540:
+                    if distance < 40:
+                        equation += "9"
+                        cv.waitKey(300)
+
+            if 550 < x < 630 and 460 < y < 540:
+                    if distance < 40:
+                        equation += "*"
+                        cv.waitKey(300)
+
+            if 220 < x < 300 and 580 < y < 660:
+                    if distance < 40:
+                        equation += "0"
+                        cv.waitKey(300)
+
+            if 330 < x < 410 and 580 < y < 660:
+                    if distance < 40:
+                        equation = equation[:-1]
+                        cv.waitKey(300)
+
+            if 550 < x < 630 and 580 < y < 660:
+                    if distance < 40:
+                        equation += "/"
+                        cv.waitKey(300)
+
+            if 440 < x < 520 and 580 < y < 660:
+                    if distance < 40:
+                        try:
+                              equation = str(eval(equation))
+                        except:
+                              equation = "error"
+                        cv.waitKey(300)
+
+    cv.imshow("webcam video",frame)
+    if cv.waitKey(1) == ord('q'):
+        break
+
